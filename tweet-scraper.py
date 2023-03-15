@@ -1,7 +1,7 @@
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
 
-query = "(\"climat change\" OR \"natural disaster\" OR \"global warming\") lang:en until:2022-12-01 since:2022-11-01 -filter:links"
+query = "(\"climat change\" OR \"natural disaster\" OR \"global warming\") lang:en until:2023-01-01 since:2022-12-01 -filter:links"
 for tweet in sntwitter.TwitterSearchScraper(query).get_items():
     print(vars(tweet))
     break 
@@ -17,6 +17,6 @@ for tweet in sntwitter.TwitterSearchScraper(query).get_items():
 
 df = pd.DataFrame(tweets, columns=['Date', 'User', 'Tweet'])#print(df)
 
-df.to_csv('scraped-tweets-nov.csv', index=False, encoding='utf-8')
+df.to_csv('scraped-tweets-dec.csv', index=False, encoding='utf-8')
 
-df.to_json('scraped-tweets-nov.json', orient='records', lines=True)
+df.to_json('scraped-tweets-dec.json', orient='records', lines=True)
