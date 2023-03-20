@@ -25,6 +25,7 @@ public class UserCount {
       while (itr.hasMoreTokens()) {
         String str = itr.nextToken();
         if (str.charAt(0) == '@') {
+            str = str+",";
             word.set(str);
             context.write(word,one);
         }
