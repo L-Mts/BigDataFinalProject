@@ -29,10 +29,10 @@ public class ClimateChangeCount {
             String str2 = itr.nextToken();
             str2.toLowerCase();
             if (str2 == "change"){
-                strfinal = str+" "+str2+",";
+                String strfinal = str+" "+str2+",";
             }
         }
-        word.set(strfinal);
+        word.set(str_final);
         context.write(word,one);
       }
     }
