@@ -32,7 +32,7 @@ public class ClimateChangeCount {
                 String strfinal = str+" "+str2+",";
             }
         }
-        word.set(str_final);
+        word.set(strfinal);
         context.write(word,one);
       }
     }
