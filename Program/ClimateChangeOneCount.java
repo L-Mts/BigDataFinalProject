@@ -11,7 +11,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class ClimateChangeCount {
+public class ClimateChangeOneCount {
 
   public static class TokenizerMapper
        extends Mapper<Object, Text, Text, IntWritable>{
@@ -25,10 +25,15 @@ public class ClimateChangeCount {
       while (itr.hasMoreTokens()) {
         String str = itr.nextToken();
         str.toLowerCase();
-        if(str.equals("climate") || str.equals("change")) {
-          str = str+",";
-          word.set(str);
-          context.write(word,one);
+        if(str.equals("climate")) {
+            if(itr.hasMoreTokens()){
+                String str2 = itr.nextToken();
+                if(str2.equals("change")) {
+                    String strfinal = str+" "+str2+",";
+                    word.set(strfinal);
+                    context.write(word,one);
+                }
+            }
         }
       }
     }
@@ -53,7 +58,7 @@ public class ClimateChangeCount {
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "word count");
-    job.setJarByClass(ClimateChangeCount.class);
+    job.setJarByClass(ClimateChangeOneCount.class);
     job.setMapperClass(TokenizerMapper.class);
     job.setCombinerClass(IntSumReducer.class);
     job.setReducerClass(IntSumReducer.class);
