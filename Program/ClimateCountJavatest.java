@@ -22,13 +22,12 @@ public class ClimateChangeCount {
     public void map(Object key, Text value, Context context
     ) throws IOException, InterruptedException {
       StringTokenizer itr = new StringTokenizer(value.toString());
+      String search_phrase = context.getConfiguration().get( "search" );
       while (itr.hasMoreTokens()) {
         String str = itr.nextToken();
-        String match = "Climate Change";
-        str.toLowerCase();
-        word.set(itr.nextToken()
-                .contains(match));
-        context.write(word,one);
+        word.set(itr.nextToken().toLowerCase());
+        if( word.toString().equals( search_phrase ) )
+          context.write(word, one);
       }
     }
   }
