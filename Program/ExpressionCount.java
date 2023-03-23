@@ -11,7 +11,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class ExpressionOneCount {
+public class ExpressionCount {
 
   public static class TokenizerMapper
        extends Mapper<Object, Text, Text, IntWritable>{
@@ -23,6 +23,7 @@ public class ExpressionOneCount {
                     ) throws IOException, InterruptedException {
       StringTokenizer itr = new StringTokenizer(value.toString());
       while (itr.hasMoreTokens()) {
+        /*
         //get next token + replace all non-letter to a "."
         String str = itr.nextToken().replaceAll("[^a-zA-Z]",".");
         str.toLowerCase();
@@ -76,8 +77,20 @@ public class ExpressionOneCount {
         }
 
         }
-        
-        /*
+        */
+        String str = itr.nextToken().replaceAll("[^a-zA-Z]","");
+        str.toLowerCase();
+        if(str.equals("climate")) {
+          if(itr.hasMoreTokens()){
+              String str2 = itr.nextToken().replaceAll("[^a-zA-Z]","");
+              str2.toLowerCase();
+              if(str2.equals("change")) {
+                  String strfinal = str+" "+str2+",";
+                  word.set(strfinal);
+                  context.write(word,one);
+              }
+          }
+        }
         if(str.equals("global")) {
             if(itr.hasMoreTokens()){
                 String str2 = itr.nextToken().replaceAll("[^a-zA-Z]","");
@@ -100,7 +113,6 @@ public class ExpressionOneCount {
                 }
             }
         }
-        */
       }
     }
   }
@@ -124,7 +136,7 @@ public class ExpressionOneCount {
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "word count");
-    job.setJarByClass(ExpressionOneCount.class);
+    job.setJarByClass(ExpressionCount.class);
     job.setMapperClass(TokenizerMapper.class);
     job.setCombinerClass(IntSumReducer.class);
     job.setReducerClass(IntSumReducer.class);
